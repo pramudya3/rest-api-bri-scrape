@@ -17,5 +17,5 @@ func BankAccountRoute(e *echo.Echo, controller controller.AccountController) {
 }
 
 func ScrapeRoute(e *echo.Echo, controller scrape.ScrapeController) {
-	e.POST("/scrape/:id", controller.GetSaldo)
+	e.POST("/api/scrape/:id", controller.GetSaldo)
 }
