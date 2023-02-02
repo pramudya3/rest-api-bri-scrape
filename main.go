@@ -26,7 +26,7 @@ func API() {
 	bac := controller.NewAccount(bas)
 
 	// scrape
-	scrape := scrape.NewScrape(bar, bas, *bac)
+	scrape := scrape.NewScrape(bas)
 
 	e := echo.New()
 	app.BankAccountRoute(e, *bac)
@@ -35,5 +35,19 @@ func API() {
 }
 
 func main() {
-	API()
+	db := app.Connect()
+
+	// bank account
+	bar := repository.NewAccount(db)
+	bas := service.NewAccount(bar)
+	bac := controller.NewAccount(bas)
+
+	// scrape
+	scrape := scrape.NewScrape(bas)
+
+	e := echo.New()
+	app.BankAccountRoute(e, *bac)
+	app.ScrapeRoute(e, *scrape)
+	log.Fatal(e.Start(":1234"))
+
 }

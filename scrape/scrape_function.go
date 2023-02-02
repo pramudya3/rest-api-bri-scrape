@@ -3,8 +3,6 @@ package scrape
 import (
 	"fmt"
 	"net/http"
-	"restapi-bank-scraper/account/controller"
-	"restapi-bank-scraper/account/repository"
 	"restapi-bank-scraper/account/service"
 	"restapi-bank-scraper/helper"
 	"restapi-bank-scraper/model"
@@ -18,21 +16,19 @@ import (
 )
 
 type ScrapeController struct {
-	repository repository.AccountRepository
-	service    service.AccountService
-	controller controller.AccountController
+	service service.AccountService
 }
 
-func NewScrape(repository repository.AccountRepository, service service.AccountService, controller controller.AccountController) *ScrapeController {
-	return &ScrapeController{repository, service, controller}
+func NewScrape(service service.AccountService) *ScrapeController {
+	return &ScrapeController{service}
 }
 
-func (controller *ScrapeController) GetSaldo(c echo.Context) error {
+func (s *ScrapeController) GetSaldo(c echo.Context) error {
 	// get account by id
 	ctx := c.Request().Context()
 	idString := c.Param("id")
 	id, _ := strconv.Atoi(idString)
-	account, err := controller.service.FindById(ctx, id)
+	account, err := s.service.FindById(ctx, id)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, helper.JSONResponses(http.StatusNotFound, err.Error(), nil))
 	}
