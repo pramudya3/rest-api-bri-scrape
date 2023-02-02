@@ -43,7 +43,10 @@ func (s *ScrapeController) GetSaldo(c echo.Context) error {
 	fmt.Println("into website https://bri.co.id/ib-bri")
 
 	// Get captcha image
-	captcha, _ := page.MustElement("#simple_img > img").MustWaitVisible().Screenshot(proto.PageCaptureScreenshotFormatPng, 1500)
+	captcha, err := page.MustElement("#simple_img > img").MustWaitVisible().Screenshot(proto.PageCaptureScreenshotFormatPng, 1500)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.JSONResponses(http.StatusBadRequest, err.Error(), nil))
+	}
 	text := helper.Captcha2Text(captcha)
 	fmt.Println(text)
 
@@ -59,7 +62,7 @@ func (s *ScrapeController) GetSaldo(c echo.Context) error {
 	page.MustElement("#loginForm > input[type=password]:nth-child(8)").MustInput(account.Password).WaitVisible()
 	err = page.MustElement("#loginForm > button").MustClick().WaitInvisible()
 	if err != nil {
-		return c.JSON(http.StatusNotAcceptable, helper.JSONResponses(http.StatusNotAcceptable, err.Error(), nil))
+		return c.JSON(http.StatusUnauthorized, helper.JSONResponses(http.StatusUnauthorized, "login failed", nil))
 	}
 	fmt.Println("success login into bri website")
 
