@@ -3,37 +3,37 @@
 RestAPI Untuk Scraping Akun BRI
   Menggunakan bahasa golang, dengan bantuan echo framework dan dbms mysql
   
-==> Create Account
+Create Account
 
     POST | localhost:1234/api/account
 
 
 
-==> Get Account By ID
+Get Account By ID
 
     GET | localhost:1234/api/account/:id
 
 
 
-==> Get All Accounts 
+Get All Accounts 
 
     GET | localhost:1234/api/account
 
 
 
-==> Update Account
+Update Account
 
     PUT | localhost:1234/api/account/:id
 
 
 
-==> Delete Account
+Delete Account
 
     DELETE | localhost:1234/api/account/:id
 
 
 
-==> Scraping Account By ID
+Scraping Account By ID
 
     POST | localhost:1234/api/scrape/:id
 
